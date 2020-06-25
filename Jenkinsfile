@@ -59,7 +59,7 @@ podTemplate(
                 echo 'Iniciando o Deploy com Helm'
                 sh "helm repo add actarlab ${CHARTMUSEUM_URL}"
                 sh 'helm repo update'
-                sh "helm upgrade --install ${DEPLOY_NAME} ${DEPLOY_CHART} --set image.tag=${IMAGE_VERSION} --set NodePort=${NODE_PORT} -n ${KUBE_NAMESPACE}"
+                sh "helm upgrade --install ${DEPLOY_NAME} ${DEPLOY_CHART} --set image.tag=${IMAGE_VERSION} --set service.nodePort=${NODE_PORT} -n ${KUBE_NAMESPACE}"
             }
         }
     }
