@@ -26,9 +26,11 @@ podTemplate(
             REPOS = checkout scm
             GIT_BRANCH = REPOS.GIT_BRANCH
 
-            if(GIT_BRANCH.equals("origin/master")) {
+            echo GIT_BRANCH
+
+            if(GIT_BRANCH.equals("master")) {
                 KUBE_NAMESPACE = "production"
-            } else if(GIT_BRANCH.equals("origin/develop")) {
+            } else if(GIT_BRANCH.equals("develop")) {
                 KUBE_NAMESPACE = "staging"
                 NODE_PORT = "31020"
             } else {
@@ -57,7 +59,7 @@ podTemplate(
                 echo 'Iniciando o Deploy com Helm'
                 sh "helm repo add actarlab ${CHARTMUSEUM_URL}"
                 sh 'helm repo update'
-                sh "helm upgrade --install ${DEPLOY_NAME} ${DEPLOY_CHART} --set image.tag=${IMAGE_VERSION} -n ${KUBE_NAMESPACE}"
+                sh "helm upgrade --install ${DEPLOY_NAME} ${DEPLOY_CHART} --set image.tag=${IMAGE_VERSION} --set NodePort=${NODE_PORT} -n ${KUBE_NAMESPACE}"
             }
         }
     }
