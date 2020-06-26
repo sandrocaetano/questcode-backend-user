@@ -15,7 +15,7 @@ podTemplate(
     def IMAGE_NAME = "questcode-backend-user"
     def ENVIRONMENT = "staging"
     def GIT_URL = "git@github.com:sandrocaetano/questcode-backend-user.git"
-    def CHARTMUSEUM_URL = "http://chartmuseum-chartmuseum:8080"
+    def CHARTMUSEUM_URL = "http://chartmuseum-lab-chartmuseum:8080"
     def DEPLOY_NAME = "questcode-backend-user"
     def DEPLOY_CHART = "actarlab/questcode-backend-user"
     def NODE_PORT = "30020"
