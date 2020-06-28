@@ -1,5 +1,7 @@
 def LABEL_ID = "questcod-${UUID.randomUUID().toString()}"
 
+tools {nodejs "node14"}
+
 podTemplate(
     label: LABEL_ID, 
     containers: [
