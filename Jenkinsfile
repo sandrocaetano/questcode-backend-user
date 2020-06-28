@@ -1,7 +1,5 @@
 def LABEL_ID = "questcod-${UUID.randomUUID().toString()}"
 
-tools {nodejs "node14"}
-
 podTemplate(
     label: LABEL_ID, 
     containers: [
@@ -23,6 +21,8 @@ podTemplate(
     def NODE_PORT = "30020"
 
     node(LABEL_ID) {
+        tool name: 'node14', type: 'nodejs' 
+
         stage('Checkout') {
             echo 'Iniciando Clone do Repositorio'
             REPOS = checkout scm
