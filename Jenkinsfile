@@ -43,7 +43,8 @@ podTemplate(
         stage('Static Analysis') {
             parallel (
                 SCA: {
-                    dependencyCheck additionalArguments: '', odcInstallation: 'Default'
+                    dependencyCheckAnalyzer scanpath: '${WORKSPACE}/package-lock.json'
+                    dependencyCheckPublisher unstableTotalAll: '0'
                 },
                 SAST: {
                     echo  'FindSecBugs'
