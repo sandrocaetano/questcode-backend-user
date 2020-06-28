@@ -44,7 +44,6 @@ podTemplate(
             parallel (
                 SCA: {
                     dependencyCheck(additionalArguments: '''
-                        --noupdate
                         --suppression backend/owasp-suppressions.xml
                         -o Dependency-Check''',
                     odcInstallation: 'Default')
