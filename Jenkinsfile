@@ -43,7 +43,11 @@ podTemplate(
         stage('Static Analysis') {
             parallel (
                 SCA: {
-                    dependencyCheckAnalyzer scanpath: '${WORKSPACE}/package-lock.json'
+                    dependencyCheck(additionalArguments: '''
+                        --noupdate
+                        --suppression backend/owasp-suppressions.xml
+                        -o Dependency-Check''',
+                    odcInstallation: 'Default')
                     dependencyCheckPublisher unstableTotalAll: '0'
                 },
                 SAST: {
