@@ -95,5 +95,8 @@ podTemplate(
                 }                  
             )
         }     
+        stage('WAF') {
+            echo 'WAF'
+        }     
     }
 }
