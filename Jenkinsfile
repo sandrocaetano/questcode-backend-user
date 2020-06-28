@@ -43,7 +43,7 @@ podTemplate(
         stage('Static Analysis') {
             parallel (
                 SCA: {
-                    echo  'Dependency Check'
+                    dependencyCheck additionalArguments: '', odcInstallation: 'Default'
                 },
                 SAST: {
                     echo  'FindSecBugs'
