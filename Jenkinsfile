@@ -43,16 +43,14 @@ podTemplate(
             IMAGE_VERSION = IMAGE_VERSION.trim()
         }
         stage('Static Analysis') {
-            steps {         
-                parallel (
-                    SCA: {
-                        echo  'Dependency Check'
-                    },
-                    SAST: {
-                        echo  'FindSecBugs'
-                    }
-                )
-            }
+            parallel (
+                SCA: {
+                    echo  'Dependency Check'
+                },
+                SAST: {
+                    echo  'FindSecBugs'
+                }
+            )
         }
         stage('Package') {
             container('docker-container') {
@@ -65,16 +63,14 @@ podTemplate(
             }
         }
         stage('Container Analysis') {
-            steps{
-                parallel(
-                    CAC: {
-                        echo 'Compliance as Code'                     
-                    },
-                    CS: {
-                        echo 'Container Scanning'                     
-                    }
-               )
-            }
+            parallel(
+                CAC: {
+                    echo 'Compliance as Code'                     
+                },
+                CS: {
+                    echo 'Container Scanning'                     
+                }
+            )
         }
     }
     node(LABEL_ID) {
@@ -87,19 +83,17 @@ podTemplate(
             }
         }
         stage('Dynamic Analysis') {
-            steps{
-                parallel(
-                    UAT:  {
-                        echo 'Vulnerability Assessment'
-                    },
-                    DAST: {
-                        echo 'Dynamic Application Security Testing'
-                    },
-                    VA: {
-                        echo 'Vulnerability Assessment'
-                    }                  
-                )
-            }
+            parallel(
+                UAT:  {
+                    echo 'Vulnerability Assessment'
+                },
+                DAST: {
+                    echo 'Dynamic Application Security Testing'
+                },
+                VA: {
+                    echo 'Vulnerability Assessment'
+                }                  
+            )
         }     
     }
 }
