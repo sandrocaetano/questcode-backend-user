@@ -48,6 +48,8 @@ podTemplate(
                     sh 'export DCMEDIUM=100'
 
                     sh 'ls'
+
+                    sh 'npm install'
                 },
                 SCA2: {
                     dependencyCheck(additionalArguments: '''
