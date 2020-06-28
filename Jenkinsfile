@@ -42,6 +42,18 @@ podTemplate(
             IMAGE_VERSION = sh returnStdout: true, script: 'sh read-package-version.sh'
             IMAGE_VERSION = IMAGE_VERSION.trim()
         }
+        stage('Static Analysis') {
+            steps {         
+                parallel (
+                    SCA: {
+                        echo  'Dependency Check'
+                    },
+                    SAST: {
+                        echo  'FindSecBugs'
+                    }
+                )
+            }
+        }
         stage('Package') {
             container('docker-container') {
                 echo 'Iniciando Empacotamento com Docker'
@@ -50,6 +62,18 @@ podTemplate(
                     sh "docker build -t ${DOCKER_HUB_USER}/${IMAGE_NAME}:${IMAGE_VERSION} ."
                     sh "docker push ${DOCKER_HUB_USER}/${IMAGE_NAME}:${IMAGE_VERSION}"
                 }
+            }
+        }
+        stage('Container Analysis') {
+            steps{
+                parallel(
+                    CAC: {
+                        echo 'Compliance as Code'                     
+                    },
+                    CS: {
+                        echo 'Container Scanning'                     
+                    }
+               )
             }
         }
     }
@@ -62,5 +86,20 @@ podTemplate(
                 sh "helm upgrade --install ${DEPLOY_NAME} ${DEPLOY_CHART} --set image.tag=${IMAGE_VERSION}  -n ${KUBE_NAMESPACE}"
             }
         }
+        stage('Dynamic Analysis') {
+            steps{
+                parallel(
+                    UAT:  {
+                        echo 'Vulnerability Assessment'
+                    },
+                    DAST: {
+                        echo 'Dynamic Application Security Testing'
+                    },
+                    VA: {
+                        echo 'Vulnerability Assessment'
+                    }                  
+                )
+            }
+        }     
     }
 }
