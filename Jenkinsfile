@@ -43,13 +43,11 @@ podTemplate(
         stage('Static Analysis') {
             parallel (
                 SCA: {
-                    sh '''
-                        export COMMIT_ID=`cat .git/HEAD`
-                        export DCHIGH=20
-                        export DCMEDIUM=100
+                    sh 'export COMMIT_ID=`cat .git/HEAD`'
+                    sh 'export DCHIGH=20'
+                    sh 'export DCMEDIUM=100'
 
-                        ls
-                    '''
+                    sh 'ls'
                 }
                 SCA2: {
                     dependencyCheck(additionalArguments: '''
