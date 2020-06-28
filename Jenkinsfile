@@ -48,7 +48,7 @@ podTemplate(
                     sh 'export DCMEDIUM=100'
 
                     sh 'ls'
-                }
+                },
                 SCA2: {
                     dependencyCheck(additionalArguments: '''
                         --suppression backend/owasp-suppressions.xml
