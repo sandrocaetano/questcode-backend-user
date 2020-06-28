@@ -51,7 +51,7 @@ podTemplate(
                         ls
                     '''
                 }
-                SCA: {
+                SCA2: {
                     dependencyCheck(additionalArguments: '''
                         --suppression backend/owasp-suppressions.xml
                         -o Dependency-Check''',
