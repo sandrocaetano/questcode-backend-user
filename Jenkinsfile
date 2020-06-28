@@ -43,6 +43,15 @@ podTemplate(
         stage('Static Analysis') {
             parallel (
                 SCA: {
+                    sh '''
+                        export COMMIT_ID=`cat .git/HEAD`
+                        export DCHIGH=20
+                        export DCMEDIUM=100
+
+                        ls
+                    '''
+                }
+                SCA: {
                     dependencyCheck(additionalArguments: '''
                         --suppression backend/owasp-suppressions.xml
                         -o Dependency-Check''',
