@@ -50,12 +50,9 @@ podTemplate(
                         sh 'export DCMEDIUM=100'
 
                         sh 'npm install'
-                    },
-                    SCA2: {
-                        dependencyCheck(additionalArguments: '''
-                            -o Dependency-Check''',
-                        odcInstallation: 'Default')
-                        dependencyCheckPublisher pattern: 'build/owasp/dependency-check-report.xml'
+
+                        dependencyCheck additionalArguments: '', odcInstallation: 'Default'
+                        dependencyCheckPublisher pattern: 'dependency-check-report.xml'
                     },
                     SAST: {
                         echo  'FindSecBugs'
