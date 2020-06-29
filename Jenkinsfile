@@ -20,9 +20,8 @@ podTemplate(
     def DEPLOY_CHART = "actarlab/questcode-backend-user"
     def NODE_PORT = "30020"
 
-    node(LABEL_ID) {
-        tool name: 'node14', type: 'nodejs' 
 
+    node(LABEL_ID) {
         stage('Checkout') {
             echo 'Iniciando Clone do Repositorio'
             REPOS = checkout scm
@@ -43,27 +42,26 @@ podTemplate(
             IMAGE_VERSION = IMAGE_VERSION.trim()
         }
         stage('Static Analysis') {
-            parallel (
-                SCA: {
-                    sh 'export COMMIT_ID=`cat .git/HEAD`'
-                    sh 'export DCHIGH=20'
-                    sh 'export DCMEDIUM=100'
+            nodejs('node14') { 
+                parallel (
+                    SCA: {
+                        sh 'export COMMIT_ID=`cat .git/HEAD`'
+                        sh 'export DCHIGH=20'
+                        sh 'export DCMEDIUM=100'
 
-                    sh 'ls'
-
-                    sh 'npm install'
-                },
-                SCA2: {
-                    dependencyCheck(additionalArguments: '''
-                        --suppression backend/owasp-suppressions.xml
-                        -o Dependency-Check''',
-                    odcInstallation: 'Default')
-                    dependencyCheckPublisher unstableTotalAll: '0'
-                },
-                SAST: {
-                    echo  'FindSecBugs'
-                }
-            )
+                        sh 'ls'
+                    },
+                    SCA2: {
+                        dependencyCheck(additionalArguments: '''
+                            -o Dependency-Check''',
+                        odcInstallation: 'Default')
+                        dependencyCheckPublisher unstableTotalAll: '0'
+                    },
+                    SAST: {
+                        echo  'FindSecBugs'
+                    }
+                )
+            }
         }
         stage('Package') {
             container('docker-container') {
