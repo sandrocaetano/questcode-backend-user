@@ -55,7 +55,7 @@ podTemplate(
                         dependencyCheck(additionalArguments: '''
                             -o Dependency-Check''',
                         odcInstallation: 'Default')
-                        dependencyCheckPublisher unstableTotalAll: '0'
+                        dependencyCheckPublisher pattern: 'build/owasp/dependency-check-report.xml'
                     },
                     SAST: {
                         echo  'FindSecBugs'
