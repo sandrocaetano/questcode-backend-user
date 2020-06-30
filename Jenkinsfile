@@ -43,6 +43,17 @@ podTemplate(
         stage('Static Analysis') {
             nodejs('node14') { 
                 parallel (
+                    SAST: {
+                        environment {
+                            scannerHome = tool 'SonarQubeScanner'
+                        }
+                        withSonarQubeEnv('sonarqube') {
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
+                        timeout(time: 10, unit: 'MINUTES') {
+                            waitForQualityGate abortPipeline: true
+                        }
+                    },
                     SCA: {
                         sh 'export COMMIT_ID=`cat .git/HEAD`'
                         sh 'export DCHIGH=20'
@@ -52,9 +63,6 @@ podTemplate(
 
                         dependencyCheck additionalArguments: '', odcInstallation: 'Default'
                         dependencyCheckPublisher pattern: 'dependency-check-report.xml'
-                    },
-                    SAST: {
-                        echo  'FindSecBugs'
                     }
                 )
             }
