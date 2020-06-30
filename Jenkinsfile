@@ -20,16 +20,15 @@ podTemplate(
     def DEPLOY_CHART = "actarlab/questcode-backend-user"
     def NODE_PORT = "30020"
 
-
     node(LABEL_ID) {
         stage('Checkout') {
             echo 'Iniciando Clone do Repositorio'
             REPOS = checkout scm
             GIT_BRANCH = REPOS.GIT_BRANCH
 
-            if(GIT_BRANCH.equals("master")) {
+            if(GIT_BRANCH.equals("origin/master")) {
                 KUBE_NAMESPACE = "production"
-            } else if(GIT_BRANCH.equals("develop")) {
+            } else if(GIT_BRANCH.equals("origin/develop")) {
                 KUBE_NAMESPACE = "staging"
                 NODE_PORT = "31020"
             } else {
